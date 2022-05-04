@@ -1,0 +1,4 @@
+sensor_msgs/Image img
+---
+float64 trans
+float64 rot
