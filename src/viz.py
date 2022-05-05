@@ -6,18 +6,19 @@ import matplotlib.pyplot as plt
 import find_vertices as vert
 
 def main():
-    max_x = 1250
-    max_y = 1250
+    max_x = 150
+    max_y = 150
     #get image
     img = cv2.imread("IMG-2333.jpg")
     
     img = vert.mask_img(img)
     img = vert.segment_image(img)
     
-    for i in range (0, 5):
-        img, vertices = vert.approx_shape(img)
-        #v_0, v_1 = alg.find_cut_naive(vertices, max_x, max_y, img, 300)
-        v_0, v_1 = alg.find_cut2(vertices, max_x, max_y, img)
+    for i in range (0, 15):
+        img, vertices = vert.approx_shape(img, True)
+        # add something about overall volume
+        v_0, v_1 = alg.find_cut_naive(vertices, max_x, max_y, img, 100)
+        # v_0, v_1 = alg.find_cut2(vertices, max_x, max_y, img)
         #v_0, v_1 = alg.find_cut_dfs(vertices, max_x, max_y, img)
         print (v_0)
         tmp = img.copy()

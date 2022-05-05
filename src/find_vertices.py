@@ -44,16 +44,19 @@ def get_angle(v_0, v_1):
     return theta
 
 
-def mask_img(img):
+def mask_img(img, debug=False):
     """ mask the image """
     mask = np.zeros(img.shape[:2], dtype="uint8")
-    cv2.circle(mask, (1450, 1950), 1400, 255,-1)
+    cv2.circle(mask, (645, 270), 260, 255,-1)
     masked = cv2.bitwise_and(img, img, mask=mask)
+    if debug:
+        cv2.imshow("masked", masked)
+        cv2.waitKey()
     
 
     return masked
 
-def segment_image(img):
+def segment_image(img, debug=False):
     """ Removes the plate's background and leaves the food""" 
     lower_pink = (110, 0, 0)
     upper_pink = (230, 255, 255)
@@ -72,11 +75,15 @@ def segment_image(img):
     result[black_pixels] = [255, 255, 255]
     kernel = np.ones((5,5), np.uint8)
     result = cv2.dilate(result, kernel, iterations=4)
+    if debug:
+        cv2.imshow("img",img)
+        cv2.imshow("result", result)
+        cv2.waitKey()
     
     return result 
 
 
-def approx_shape(img):
+def approx_shape(img, debug=False):
     # Convert to greyscale
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # Convert to binary image by thresholding
@@ -110,8 +117,10 @@ def approx_shape(img):
                 cv2.putText(tmp, f"vertex {i}",(int(app[0]), int(app[1])),  
                 cv2.FONT_HERSHEY_SIMPLEX,  1, (255, 0, 0) )
             
-    
-
+    if debug:
+        cv2.imshow("approximated shape", tmp)
+        cv2.waitKey()
+    #print (vertices)
     vertices = vertices.reshape(len(vertices),2)
     #print (vertices)
     
