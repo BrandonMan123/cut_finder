@@ -20,7 +20,7 @@ def main():
     angle = get_angle(v_0, v_1)
 
 
-def get_cutting_info(img, method="naive"):
+def get_cutting_info(img, method="naive", max_x=100, max_y=100):
     img = mask_img(img)
     img = segment_image(img)
     img, vertices = approx_shape(img)
@@ -29,15 +29,16 @@ def get_cutting_info(img, method="naive"):
     elif method == "dfs":
         v_0, v_1 = alg.find_cut_dfs(vertices, max_x, max_y, img)
     else:
-        v_0, v_1 = alg.find_cut_naive(vertices, max_x, max_y,k=400)
+        v_0, v_1 = alg.find_cut_naive(vertices, max_x, max_y,img,k=400)
     angle = get_angle(v_0, v_1)
+    print ("found angle")
     return v_0, angle
 
 def get_angle(v_0, v_1):
     # double check
     v = v_0 if v_0[1] < v_1[1] else v_1  # x is element 0, y is element 1
     
-    theta = math.tan(v[1], v[0])
+    theta = math.degrees(math.atan(v[1]/v[0]))
     if theta < 0:
         theta += 180
     return theta
@@ -110,9 +111,7 @@ def approx_shape(img):
                 cv2.FONT_HERSHEY_SIMPLEX,  1, (255, 0, 0) )
             
     
-    cv2.imshow("approximated shape", tmp)
-    #cv2.waitKey()
-    #print (vertices)
+
     vertices = vertices.reshape(len(vertices),2)
     #print (vertices)
     

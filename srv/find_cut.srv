@@ -1,4 +1,5 @@
 sensor_msgs/Image img
 ---
-float64 trans
+float64 trans_x
+float64 trans_y
 float64 rot

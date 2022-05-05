@@ -53,7 +53,7 @@ def find_cut2(vertices, max_x, max_y, img):
             continue
         v_2 = i
 
-    viz_img(img, v_0, v_1, v_2, "init")
+    #viz_img(img, v_0, v_1, v_2, "init")
     
     dist = get_dist(v_1, v_2)
     if dist > max_x or dist > max_y:
@@ -132,10 +132,10 @@ def find_cut_dfs(vertices, max_x, max_y, img):
     visited = [v_0, v_1]
     #print ("graph: ", graph)
     #print (v_0, v_1, v_2)
-    viz_img(img, v_0, v_1, v_2, "init")
+    #viz_img(img, v_0, v_1, v_2, "init")
 
     def dfs(visited, graph, curr, v_0, v_1, v_2, best_vertex, img):
-        viz_img(img, v_0, v_1, v_2)
+        #viz_img(img, v_0, v_1, v_2)
 
         if curr not in visited:
             # print (curr, "has not been visited. visited contains", visited)
