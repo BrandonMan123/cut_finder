@@ -13,6 +13,7 @@ from cv_bridge import CvBridge
 TODO: 
 1. Find cv image type
 2. Find how to return message to main
+translation: [0.18710371269311812, -0.43625319322764927, 0.6480278593440019]
 
  """
 def find_vertices(req):
@@ -23,17 +24,19 @@ def find_vertices(req):
     coord, angle = finder.get_cutting_info(img)
     listener = tf.TransformListener()
     trans = 0
-    # while trans == 0:
-    #     print ("looking up stuff")
-    #     try:
-    #         trans, rot = listener.lookupTransform("/base_link", 
-    #         "/camera_color_optical_frame", rospy.Time(0))
+    print ("getting transform")
+    while trans == 0:
+        print ("looking up stuff")
+        try:
+            trans, rot = listener.lookupTransform("/base_link", 
+            "/camera_color_optical_frame", rospy.Time(0))
             
-    #     except (tf.LookupException, tf.ConnectivityException, 
-    #     tf.ExtrapolationException):
-    #         continue
-    # ret_coord = (coord[0]+trans[0], coord[1]+trans[1])
-    ret_coord = coord
+        except (tf.LookupException, tf.ConnectivityException, 
+        tf.ExtrapolationException):
+            continue
+    print ("coord is ", coord, "translation is ", trans)
+    ret_coord = (coord[0]+trans[0], coord[1]+trans[1])
+    # ret_coord = coord
     # angle +=  rot
     return [ret_coord[0], ret_coord[1], angle]
 
