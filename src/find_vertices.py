@@ -21,15 +21,15 @@ def main():
 
 
 def get_cutting_info(img, method="naive", max_x=100, max_y=100):
-    img = mask_img(img)
-    img = segment_image(img)
-    img, vertices = approx_shape(img)
+    img = mask_img(img, debug=False)
+    img = segment_image(img, debug=False)
+    img, vertices = approx_shape(img, debug=False)
     if method == "find_cut2":
         v_0, v_1 = alg.find_cut2(vertices, max_x, max_y, img)
     elif method == "dfs":
         v_0, v_1 = alg.find_cut_dfs(vertices, max_x, max_y, img)
     else:
-        v_0, v_1 = alg.find_cut_naive(vertices, max_x, max_y,img,k=400)
+        v_0, v_1 = alg.find_cut_naive(vertices, max_x, max_y,img,k=90)
     angle = get_angle(v_0, v_1)
     print ("found angle")
     return v_0, angle
@@ -44,10 +44,10 @@ def get_angle(v_0, v_1):
     return theta
 
 
-def mask_img(img, debug=False):
+def mask_img(img, center=(610, 260) , radius=260, debug=False):
     """ mask the image """
     mask = np.zeros(img.shape[:2], dtype="uint8")
-    cv2.circle(mask, (645, 270), 260, 255,-1)
+    cv2.circle(mask, center, radius, 255,-1)
     masked = cv2.bitwise_and(img, img, mask=mask)
     if debug:
         cv2.imshow("masked", masked)
@@ -55,6 +55,13 @@ def mask_img(img, debug=False):
     
 
     return masked
+
+
+def display_cut (img, start):
+    cv2.circle(img, (int(start[0]), int(start[1])), 3, 30, 10, -1)
+    cv2.imshow("cut point", img)
+    cv2.waitKey()
+
 
 def segment_image(img, debug=False):
     """ Removes the plate's background and leaves the food""" 
@@ -85,7 +92,7 @@ def segment_image(img, debug=False):
 
 def approx_shape(img, debug=False):
     # Convert to greyscale
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     # Convert to binary image by thresholding
     _, threshold = cv2.threshold(img_gray, 245, 255, cv2.THRESH_BINARY_INV)
     # Find the contours

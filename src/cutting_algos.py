@@ -17,7 +17,7 @@ def find_cut_naive(points, max_x, max_y, img, k=80):
     y_max = int(sorted_y[-1])
     y_min = int(sorted_y[0])
 
-    return (x_cut, y_min), (x_cut, y_max)
+    return (x_cut, y_max), (x_cut, y_min)
 
 
 def find_nearest(array, value):

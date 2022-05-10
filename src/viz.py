@@ -9,10 +9,10 @@ def main():
     max_x = 150
     max_y = 150
     #get image
-    img = cv2.imread("IMG-2333.jpg")
+    img = cv2.imread("left0001.jpg")
     
-    img = vert.mask_img(img)
-    img = vert.segment_image(img)
+    img = vert.mask_img(img, (610, 260), 260, debug=True)
+    img = vert.segment_image(img, debug=True)
     
     for i in range (0, 15):
         img, vertices = vert.approx_shape(img, True)
